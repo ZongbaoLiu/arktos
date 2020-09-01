@@ -3,10 +3,40 @@ package app
 import (
 	"github.com/spf13/cobra"
 	utilerrors "k8s.io/apimachinery/pkg/util/errors"
+	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/klog"
 	"k8s.io/kubernetes/cmd/cloudgateway/app/options"
+	clientset "k8s.io/kubernetes/pkg/client/clientset/versioned"
+	"k8s.io/kubernetes/pkg/cloudgateway"
 	utilflag "k8s.io/kubernetes/pkg/util/flag"
+	informers "k8s.io/kubernetes/pkg/client/informers/externalversions"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
 )
+
+// start parameters
+var (
+	onlyOneSignalHandler = make(chan struct{})
+	shutdownSignals		 = []os.Signal{os.Interrupt, syscall.SIGTERM}
+)
+
+func setupSignalHandler() (stopCh <-chan struct{}){
+	close(onlyOneSignalHandler)
+	stop := make(chan struct{})
+	c := make(chan os.Signal, 2)
+	signal.Notify(c, shutdownSignals...)
+	go func(){
+		<-c
+		close(stop)
+		<-c
+		os.Exit(1)
+	}()
+
+	return stop
+}
 
 func NewCloudGatewayCommand() *cobra.Command {
 	o := options.NewOptions()
@@ -42,6 +72,36 @@ func NewCloudGatewayCommand() *cobra.Command {
 
 // runCommand runs the cloudgateway
 func runCommand(options completedOptions) error{
+	stopCh := setupSignalHandler()
+	return Run(options, stopCh)
+}
+
+func Run(options completedOptions, stopCh <-chan struct{}) error{
+	klog.V(4).Infof("Cloudgateway start to run")
+	cfg, err := clientcmd.BuildConfigFromFlags(options.Master, options.Kubeconfig)
+	if err != nil{
+		klog.Fatalf("Error building kubeconfig: %s", err.Error())
+	}
+
+	kubeClient, err := kubernetes.NewForConfig(cfg)
+	if err != nil{
+		klog.Fatalf("Error building kubernetes clientset: %s", err.Error())
+	}
+
+	cloudgatewayClient, err := clientset.NewForConfig(cfg)
+	if err != nil{
+		klog.Fatalf("Error building cloudgateway clientset: %s", err.Error())
+	}
+
+	cloudgatewayInformerFactory := informers.NewSharedInformerFactory(cloudgatewayClient, time.Second*30)
+	controller := cloudgateway.NewController(kubeClient, cloudgatewayClient,
+		cloudgatewayInformerFactory.Cloudgateway().V1().ESites(), &cloudgateway.TestHandler{})
+	go cloudgatewayInformerFactory.Start(stopCh)
+
+	if err = controller.Run(2, stopCh); err != nil{
+		klog.Fatalf("Error running controller: %s", err.Error())
+	}
+
 	return nil
 }
 
