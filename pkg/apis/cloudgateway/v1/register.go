@@ -30,6 +30,8 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		SchemeGroupVersion,
 		&ESite{},
 		&ESiteList{},
+		&EGateway{},
+		&EGatewayList{},
 		)
 
 	// register the type in the scheme
