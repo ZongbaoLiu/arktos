@@ -8,16 +8,16 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 // ESite describe the edge site resource definition
 type ESite struct {
-	metav1.TypeMeta
-	metav1.ObjectMeta
+	metav1.TypeMeta		`json:",inline"`
+	metav1.ObjectMeta	`json:"metadata,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // list type
 type ESiteList struct {
-	metav1.TypeMeta
-	metav1.ListMeta
+	metav1.TypeMeta		`json:",inline"`
+	metav1.ListMeta		`json:"metadata"`
 
-	Items []ESite
+	Items []ESite		`json:"items"`
 }
