@@ -12,7 +12,7 @@ type ESite struct {
 	metav1.ObjectMeta
 }
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Ojbect
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // list type
 type ESiteList struct {
