@@ -28,6 +28,8 @@ func Kind(kind string) schema.GroupKind {
 func addKnownTypes(scheme *runtime.Scheme) error {
 	scheme.AddKnownTypes(
 		SchemeGroupVersion,
+		&ESite{},
+		&ESiteList{},
 		)
 
 	// register the type in the scheme
