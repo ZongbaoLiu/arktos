@@ -28,6 +28,14 @@ type FakeCloudgatewayV1 struct {
 	*testing.Fake
 }
 
+func (c *FakeCloudgatewayV1) EGateways(namespace string) v1.EGatewayInterface {
+	return &FakeEGateways{c, namespace, "system"}
+}
+
+func (c *FakeCloudgatewayV1) EGatewaysWithMultiTenancy(namespace string, tenant string) v1.EGatewayInterface {
+	return &FakeEGateways{c, namespace, tenant}
+}
+
 func (c *FakeCloudgatewayV1) ESites(namespace string) v1.ESiteInterface {
 	return &FakeESites{c, namespace, "system"}
 }

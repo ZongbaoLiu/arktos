@@ -32,6 +32,7 @@ import (
 type CloudgatewayV1Interface interface {
 	RESTClient() rest.Interface
 	RESTClients() []rest.Interface
+	EGatewaysGetter
 	ESitesGetter
 }
 
@@ -39,6 +40,14 @@ type CloudgatewayV1Interface interface {
 type CloudgatewayV1Client struct {
 	restClients []rest.Interface
 	configs     *rest.Config
+}
+
+func (c *CloudgatewayV1Client) EGateways(namespace string) EGatewayInterface {
+	return newEGatewaysWithMultiTenancy(c, namespace, "system")
+}
+
+func (c *CloudgatewayV1Client) EGatewaysWithMultiTenancy(namespace string, tenant string) EGatewayInterface {
+	return newEGatewaysWithMultiTenancy(c, namespace, tenant)
 }
 
 func (c *CloudgatewayV1Client) ESites(namespace string) ESiteInterface {

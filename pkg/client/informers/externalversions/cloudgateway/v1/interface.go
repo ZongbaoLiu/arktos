@@ -24,6 +24,8 @@ import (
 
 // Interface provides access to all the informers in this group version.
 type Interface interface {
+	// EGateways returns a EGatewayInformer.
+	EGateways() EGatewayInformer
 	// ESites returns a ESiteInformer.
 	ESites() ESiteInformer
 }
@@ -43,6 +45,11 @@ func New(f internalinterfaces.SharedInformerFactory, namespace string, tweakList
 func NewWithMultiTenancy(f internalinterfaces.SharedInformerFactory, namespace string, tweakListOptions internalinterfaces.TweakListOptionsFunc, tenant string) Interface {
 
 	return &version{factory: f, tenant: tenant, namespace: namespace, tweakListOptions: tweakListOptions}
+}
+
+// EGateways returns a EGatewayInformer.
+func (v *version) EGateways() EGatewayInformer {
+	return &eGatewayInformer{factory: v.factory, namespace: v.namespace, tenant: v.tenant, tweakListOptions: v.tweakListOptions}
 }
 
 // ESites returns a ESiteInformer.

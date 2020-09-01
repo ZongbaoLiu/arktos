@@ -18,6 +18,14 @@ limitations under the License.
 
 package v1
 
+// EGatewayListerExpansion allows custom methods to be added to
+// EGatewayLister.
+type EGatewayListerExpansion interface{}
+
+// EGatewayNamespaceListerExpansion allows custom methods to be added to
+// EGatewayNamespaceLister.
+type EGatewayNamespaceListerExpansion interface{}
+
 // ESiteListerExpansion allows custom methods to be added to
 // ESiteLister.
 type ESiteListerExpansion interface{}
