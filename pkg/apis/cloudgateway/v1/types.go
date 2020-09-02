@@ -1,8 +1,9 @@
 package v1
 
 import (
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"time"
+
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 // +genclient
@@ -11,18 +12,18 @@ import (
 
 // ESite describe the edge site resource definition
 type ESite struct {
-	metav1.TypeMeta		`json:",inline"`
-	metav1.ObjectMeta	`json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // list type
 type ESiteList struct {
-	metav1.TypeMeta		`json:",inline"`
-	metav1.ListMeta		`json:"metadata"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata"`
 
-	Items []ESite		`json:"items"`
+	Items []ESite `json:"items"`
 }
 
 // +genclient
@@ -31,8 +32,8 @@ type ESiteList struct {
 
 // EGateway describe the edge gateway definition
 type EGateway struct {
-	metav1.TypeMeta		`json:",inline"`
-	metav1.ObjectMeta	`json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// Ip address of the gateway
 	Ip string
@@ -48,32 +49,10 @@ type EGateway struct {
 
 // list type
 type EGatewayList struct {
-	metav1.TypeMeta		`json:",inline"`
-	metav1.ListMeta		`json:"metadata"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata"`
 
-	Items []EGateway	`json:"items"`
-}
-
-// KubeAPIConfig indicates the configuration for interacting with k8s server
-type KubeAPIConfig struct {
-	// Master indicates the address of the Kubernetes API server (overrides any value in KubeConfig)
-	// such as https://127.0.0.1:8443
-	// default ""
-	// Note: Can not use "omitempty" option,  It will affect the output of the default configuration file
-	Master string `json:"master"`
-	// ContentType indicates the ContentType of message transmission when interacting with k8s
-	// default application/vnd.kubernetes.protobuf
-	ContentType string `json:"contentType,omitempty"`
-	// QPS to while talking with kubernetes apiserve
-	// default 100
-	QPS int32 `json:"qps,omitempty"`
-	// Burst to use while talking with kubernetes apiserver
-	// default 200
-	Burst int32 `json:"burst,omitempty"`
-	// KubeConfig indicates the path to kubeConfig file with authorization and master location information.
-	// default "/root/.kube/config"
-	// +Required
-	KubeConfig string `json:"kubeConfig"`
+	Items []EGateway `json:"items"`
 }
 
 // CloudHub indicates the config of CloudHub module.
@@ -113,7 +92,7 @@ type CloudHub struct {
 	// HTTPS indicates https server info
 	// +Required
 	HTTPS *CloudHubHTTPS `json:"https,omitempty"`
-	// AdvertiseAddress sets the IP address for the cloudcore to advertise.
+	// AdvertiseAddress sets the IP address for the CloudGateway to advertise.
 	AdvertiseAddress []string `json:"advertiseAddress,omitempty"`
 	// EdgeCertSigningDuration indicates the validity period of edge certificate
 	// default 365d

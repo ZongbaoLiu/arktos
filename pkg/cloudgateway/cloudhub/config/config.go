@@ -14,14 +14,13 @@ var once sync.Once
 
 type Configure struct {
 	v1.CloudHub
-	KubeAPIConfig *v1.KubeAPIConfig
-	Ca            []byte
-	CaKey         []byte
-	Cert          []byte
-	Key           []byte
+	Ca    []byte
+	CaKey []byte
+	Cert  []byte
+	Key   []byte
 }
 
-func InitConfigure(hub *v1.CloudHub, kubeAPIConfig *v1.KubeAPIConfig) {
+func InitConfigure(hub *v1.CloudHub) {
 	once.Do(func() {
 		if len(hub.AdvertiseAddress) == 0 {
 			klog.Fatal("AdvertiseAddress must be specified!")
@@ -29,7 +28,6 @@ func InitConfigure(hub *v1.CloudHub, kubeAPIConfig *v1.KubeAPIConfig) {
 
 		Config = Configure{
 			CloudHub:      *hub,
-			KubeAPIConfig: kubeAPIConfig,
 		}
 
 		ca, err := ioutil.ReadFile(hub.TLSCAFile)
