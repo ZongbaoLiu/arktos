@@ -33,6 +33,8 @@ func (o *Options) Flags() (fss cliflag.NamedFlagSets) {
 	fs.StringVar(&o.Master, "master", o.Master, "The address of the Arktos API server.")
 	fs.StringVar(&o.Kubeconfig, "kubeconfig", o.Kubeconfig, "Path to kubeconfig file with authorization"+
 		" and master location information.")
+	fs.StringVar(&o.ConfigFile, "config", o.ConfigFile, "Path to the CloudGateway configuration file." +
+		" Flags override values in this file.")
 
 	return fss
 }

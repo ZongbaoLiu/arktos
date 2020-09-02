@@ -69,7 +69,7 @@ func NewCloudGatewayCommand() *cobra.Command {
 			registerModules(config)
 
 			// start all the modules started in cloudGateway
-			core.Run()
+			go core.Run()
 
 			return runCommand(completedOptions)
 		},
