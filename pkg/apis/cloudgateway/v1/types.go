@@ -2,6 +2,24 @@ package v1
 
 import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
+type EGatewayPhase string
+
+// These are the valid statuses of EGateway.
+const (
+	// EGatewayPending means the EGateway has been created/added by the system, but not configured.
+	EGatewayPending EGatewayPhase = "Pending"
+	// EGatewayRunning means the EGateway has been configured and has Arktos components running.
+	EGatewayRunning EGatewayPhase = "Running"
+	// EGatewayTerminated means the EGateway has been removed from the cluster.
+	EGatewayTerminated EGatewayPhase = "Terminated"
+)
+
+// EGatewayStatus is information about the current status of a EGa.
+type EGatewayStatus struct {
+	// +optional
+	Phase EGatewayPhase
+}
+
 // +genclient
 // +genclient:noStatus
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -23,7 +41,6 @@ type ESiteList struct {
 }
 
 // +genclient
-// +genclient:noStatus
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // EGateway describe the edge gateway definition
@@ -35,10 +52,15 @@ type EGateway struct {
 	Ip string
 
 	// Virtual presence ip address cidr of this gateway
+	// +optional
 	VirtualPresenceIPcidr string
 
 	// ESiteName associated to the gateway
 	ESiteName string
+
+	// EGatewayStatus describes the current status of a EGateway
+	// +optional
+	Status EGatewayStatus
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

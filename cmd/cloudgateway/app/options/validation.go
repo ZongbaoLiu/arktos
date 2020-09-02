@@ -6,7 +6,7 @@ import "fmt"
 func (o *Options) Validate() []error {
 	var errs []error
 	if o.Kubeconfig == "" {
-		errs = append(errs, fmt.Errorf("--kubeconfig should be empty"))
+		errs = append(errs, fmt.Errorf("--kubeconfig should not be empty"))
 	}
 
 	return errs
