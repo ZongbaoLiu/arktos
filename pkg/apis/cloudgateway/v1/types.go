@@ -183,8 +183,21 @@ type EPolicyList struct {
 	Items []EPolicy	`json:"items"`
 }
 
+type ServiceExposePhase string
+
+// These are the valid statuses of ServiceExpose.
+const (
+	// ServiceExposePending means the ServiceExpose has been created/added by the system, but not configured.
+	ServiceExposePending ServiceExposePhase = "Pending"
+	// ServiceExposeActive means the ServiceExpose has been configured and has Arktos components running.
+	ServiceExposeActive ServiceExposePhase = "Active"
+)
+
+type ServiceExposeStatus struct {
+	phase ServiceExposePhase
+}
+
 // +genclient
-// +genclient:noStatus
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // ServiceExpose describe how to expose the service to other site
@@ -203,6 +216,10 @@ type ServiceExpose struct {
 
 	// EPolicys name list of the service will be allowed to access
 	EPolicys []string
+
+	// ServiceExposeStatus describes the current status of a ServiceExpose
+	// +optional
+	Status ServiceExposeStatus
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
