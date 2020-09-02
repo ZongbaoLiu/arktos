@@ -46,6 +46,7 @@ type EGatewaysGetter interface {
 type EGatewayInterface interface {
 	Create(*v1.EGateway) (*v1.EGateway, error)
 	Update(*v1.EGateway) (*v1.EGateway, error)
+	UpdateStatus(*v1.EGateway) (*v1.EGateway, error)
 	Delete(name string, options *metav1.DeleteOptions) error
 	DeleteCollection(options *metav1.DeleteOptions, listOptions metav1.ListOptions) error
 	Get(name string, options metav1.GetOptions) (*v1.EGateway, error)
@@ -283,6 +284,30 @@ func (c *eGateways) Update(eGateway *v1.EGateway) (result *v1.EGateway, err erro
 		Namespace(c.ns).
 		Resource("egateways").
 		Name(eGateway.Name).
+		Body(eGateway).
+		Do().
+		Into(result)
+
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+
+func (c *eGateways) UpdateStatus(eGateway *v1.EGateway) (result *v1.EGateway, err error) {
+	result = &v1.EGateway{}
+
+	objectTenant := eGateway.ObjectMeta.Tenant
+	if objectTenant == "" {
+		objectTenant = c.te
+	}
+
+	err = c.client.Put().
+		Tenant(objectTenant).
+		Namespace(c.ns).
+		Resource("egateways").
+		Name(eGateway.Name).
+		SubResource("status").
 		Body(eGateway).
 		Do().
 		Into(result)
