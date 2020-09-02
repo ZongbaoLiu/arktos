@@ -1,34 +1,38 @@
 package app
 
 import (
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
+
+	"github.com/kubeedge/beehive/pkg/core"
 	"github.com/spf13/cobra"
 	utilerrors "k8s.io/apimachinery/pkg/util/errors"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/klog"
 	"k8s.io/kubernetes/cmd/cloudgateway/app/options"
+	v1 "k8s.io/kubernetes/pkg/apis/cloudgateway/v1"
 	clientset "k8s.io/kubernetes/pkg/client/clientset/versioned"
-	"k8s.io/kubernetes/pkg/cloudgateway"
-	utilflag "k8s.io/kubernetes/pkg/util/flag"
 	informers "k8s.io/kubernetes/pkg/client/informers/externalversions"
-	"os"
-	"os/signal"
-	"syscall"
-	"time"
+	"k8s.io/kubernetes/pkg/cloudgateway"
+	"k8s.io/kubernetes/pkg/cloudgateway/cloudhub"
+	utilflag "k8s.io/kubernetes/pkg/util/flag"
 )
 
 // start parameters
 var (
 	onlyOneSignalHandler = make(chan struct{})
-	shutdownSignals		 = []os.Signal{os.Interrupt, syscall.SIGTERM}
+	shutdownSignals      = []os.Signal{os.Interrupt, syscall.SIGTERM}
 )
 
-func setupSignalHandler() (stopCh <-chan struct{}){
+func setupSignalHandler() (stopCh <-chan struct{}) {
 	close(onlyOneSignalHandler)
 	stop := make(chan struct{})
 	c := make(chan os.Signal, 2)
 	signal.Notify(c, shutdownSignals...)
-	go func(){
+	go func() {
 		<-c
 		close(stop)
 		<-c
@@ -41,9 +45,9 @@ func setupSignalHandler() (stopCh <-chan struct{}){
 func NewCloudGatewayCommand() *cobra.Command {
 	o := options.NewOptions()
 	cmd := &cobra.Command{
-		Use: "cloudgateway",
+		Use:  "cloudgateway",
 		Long: `TODO(nkaptx)`,
-		RunE: func(cmd *cobra.Command, args []string) error{
+		RunE: func(cmd *cobra.Command, args []string) error {
 			utilflag.PrintFlags(cmd.Flags())
 
 			// Set default options
@@ -56,6 +60,16 @@ func NewCloudGatewayCommand() *cobra.Command {
 			if errs := completedOptions.Validate(); len(errs) != 0 {
 				return utilerrors.NewAggregate(errs)
 			}
+
+			config, err := o.Config()
+			if err != nil {
+				klog.Fatal(err)
+			}
+			// register all the modules started in cloudGateway
+			registerModules(config)
+
+			// start all the modules started in cloudGateway
+			core.Run()
 
 			return runCommand(completedOptions)
 		},
@@ -71,25 +85,25 @@ func NewCloudGatewayCommand() *cobra.Command {
 }
 
 // runCommand runs the cloudgateway
-func runCommand(options completedOptions) error{
+func runCommand(options completedOptions) error {
 	stopCh := setupSignalHandler()
 	return Run(options, stopCh)
 }
 
-func Run(options completedOptions, stopCh <-chan struct{}) error{
+func Run(options completedOptions, stopCh <-chan struct{}) error {
 	klog.V(4).Infof("Cloudgateway start to run")
 	cfg, err := clientcmd.BuildConfigFromFlags(options.Master, options.Kubeconfig)
-	if err != nil{
+	if err != nil {
 		klog.Fatalf("Error building kubeconfig: %s", err.Error())
 	}
 
 	kubeClient, err := kubernetes.NewForConfig(cfg)
-	if err != nil{
+	if err != nil {
 		klog.Fatalf("Error building kubernetes clientset: %s", err.Error())
 	}
 
 	cloudgatewayClient, err := clientset.NewForConfig(cfg)
-	if err != nil{
+	if err != nil {
 		klog.Fatalf("Error building cloudgateway clientset: %s", err.Error())
 	}
 
@@ -98,7 +112,7 @@ func Run(options completedOptions, stopCh <-chan struct{}) error{
 		cloudgatewayInformerFactory.Cloudgateway().V1().ESites(), &cloudgateway.TestHandler{})
 	go cloudgatewayInformerFactory.Start(stopCh)
 
-	if err = controller.Run(2, stopCh); err != nil{
+	if err = controller.Run(2, stopCh); err != nil {
 		klog.Fatalf("Error running controller: %s", err.Error())
 	}
 
@@ -106,7 +120,7 @@ func Run(options completedOptions, stopCh <-chan struct{}) error{
 }
 
 // completeOptions is a private wrapper that enforces a call of Complete() before Run can be invoked
-type completedOptions struct{
+type completedOptions struct {
 	*options.Options
 }
 
@@ -122,4 +136,9 @@ func Complete(o *options.Options) (completedOptions, error) {
 
 	options.Options = o
 	return options, nil
+}
+
+// registerModules register all the modules started in cloudGateway
+func registerModules(c *v1.CloudGatewayConfig) {
+	cloudhub.Register(c.Modules.CloudHub)
 }

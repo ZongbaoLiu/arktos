@@ -55,6 +55,20 @@ type EGatewayList struct {
 	Items []EGateway `json:"items"`
 }
 
+// CloudGatewayConfig indicates the config of cloudGateway which get from cloudGateway config file
+type CloudGatewayConfig struct {
+	metav1.TypeMeta
+	// Modules indicates cloudGateway modules config
+	// +Required
+	Modules *Modules `json:"modules,omitempty"`
+}
+
+// Modules indicates the modules of CloudGateway will be use
+type Modules struct {
+	// CloudHub indicates CloudHub module config
+	CloudHub *CloudHub `json:"cloudHub,omitempty"`
+}
+
 // CloudHub indicates the config of CloudHub module.
 // CloudHub is a web socket or quic server responsible for watching changes at the cloud side,
 // caching and sending messages to EdgeHub.
