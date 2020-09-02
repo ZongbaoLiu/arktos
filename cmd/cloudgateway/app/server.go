@@ -42,7 +42,8 @@ func NewCloudGatewayCommand() *cobra.Command {
 	o := options.NewOptions()
 	cmd := &cobra.Command{
 		Use: "cloudgateway",
-		Long: `TODO(nkaptx)`,
+		Long: `As the proxy or gateway of the services or component in the edge site, cloudgateway provides secure
+communication and access capabilities for services and components of the cloud and edge sites.`,
 		RunE: func(cmd *cobra.Command, args []string) error{
 			utilflag.PrintFlags(cmd.Flags())
 
