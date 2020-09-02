@@ -32,6 +32,16 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&ESiteList{},
 		&EGateway{},
 		&EGatewayList{},
+		&VirtualPresence{},
+		&VirtualPresenceList{},
+		&EService{},
+		&EServiceList{},
+		&EServer{},
+		&EServerList{},
+		&EPolicy{},
+		&EPolicyList{},
+		&ServiceExpose{},
+		&ServiceExposeList{},
 		)
 
 	// register the type in the scheme
