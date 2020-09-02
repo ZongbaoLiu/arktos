@@ -26,6 +26,30 @@ type EGatewayListerExpansion interface{}
 // EGatewayNamespaceLister.
 type EGatewayNamespaceListerExpansion interface{}
 
+// EPolicyListerExpansion allows custom methods to be added to
+// EPolicyLister.
+type EPolicyListerExpansion interface{}
+
+// EPolicyNamespaceListerExpansion allows custom methods to be added to
+// EPolicyNamespaceLister.
+type EPolicyNamespaceListerExpansion interface{}
+
+// EServerListerExpansion allows custom methods to be added to
+// EServerLister.
+type EServerListerExpansion interface{}
+
+// EServerNamespaceListerExpansion allows custom methods to be added to
+// EServerNamespaceLister.
+type EServerNamespaceListerExpansion interface{}
+
+// EServiceListerExpansion allows custom methods to be added to
+// EServiceLister.
+type EServiceListerExpansion interface{}
+
+// EServiceNamespaceListerExpansion allows custom methods to be added to
+// EServiceNamespaceLister.
+type EServiceNamespaceListerExpansion interface{}
+
 // ESiteListerExpansion allows custom methods to be added to
 // ESiteLister.
 type ESiteListerExpansion interface{}
@@ -33,3 +57,19 @@ type ESiteListerExpansion interface{}
 // ESiteNamespaceListerExpansion allows custom methods to be added to
 // ESiteNamespaceLister.
 type ESiteNamespaceListerExpansion interface{}
+
+// ServiceExposeListerExpansion allows custom methods to be added to
+// ServiceExposeLister.
+type ServiceExposeListerExpansion interface{}
+
+// ServiceExposeNamespaceListerExpansion allows custom methods to be added to
+// ServiceExposeNamespaceLister.
+type ServiceExposeNamespaceListerExpansion interface{}
+
+// VirtualPresenceListerExpansion allows custom methods to be added to
+// VirtualPresenceLister.
+type VirtualPresenceListerExpansion interface{}
+
+// VirtualPresenceNamespaceListerExpansion allows custom methods to be added to
+// VirtualPresenceNamespaceLister.
+type VirtualPresenceNamespaceListerExpansion interface{}

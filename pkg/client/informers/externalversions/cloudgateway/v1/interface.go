@@ -26,8 +26,18 @@ import (
 type Interface interface {
 	// EGateways returns a EGatewayInformer.
 	EGateways() EGatewayInformer
+	// EPolicies returns a EPolicyInformer.
+	EPolicies() EPolicyInformer
+	// EServers returns a EServerInformer.
+	EServers() EServerInformer
+	// EServices returns a EServiceInformer.
+	EServices() EServiceInformer
 	// ESites returns a ESiteInformer.
 	ESites() ESiteInformer
+	// ServiceExposes returns a ServiceExposeInformer.
+	ServiceExposes() ServiceExposeInformer
+	// VirtualPresences returns a VirtualPresenceInformer.
+	VirtualPresences() VirtualPresenceInformer
 }
 
 type version struct {
@@ -52,7 +62,32 @@ func (v *version) EGateways() EGatewayInformer {
 	return &eGatewayInformer{factory: v.factory, namespace: v.namespace, tenant: v.tenant, tweakListOptions: v.tweakListOptions}
 }
 
+// EPolicies returns a EPolicyInformer.
+func (v *version) EPolicies() EPolicyInformer {
+	return &ePolicyInformer{factory: v.factory, namespace: v.namespace, tenant: v.tenant, tweakListOptions: v.tweakListOptions}
+}
+
+// EServers returns a EServerInformer.
+func (v *version) EServers() EServerInformer {
+	return &eServerInformer{factory: v.factory, namespace: v.namespace, tenant: v.tenant, tweakListOptions: v.tweakListOptions}
+}
+
+// EServices returns a EServiceInformer.
+func (v *version) EServices() EServiceInformer {
+	return &eServiceInformer{factory: v.factory, namespace: v.namespace, tenant: v.tenant, tweakListOptions: v.tweakListOptions}
+}
+
 // ESites returns a ESiteInformer.
 func (v *version) ESites() ESiteInformer {
 	return &eSiteInformer{factory: v.factory, namespace: v.namespace, tenant: v.tenant, tweakListOptions: v.tweakListOptions}
+}
+
+// ServiceExposes returns a ServiceExposeInformer.
+func (v *version) ServiceExposes() ServiceExposeInformer {
+	return &serviceExposeInformer{factory: v.factory, namespace: v.namespace, tenant: v.tenant, tweakListOptions: v.tweakListOptions}
+}
+
+// VirtualPresences returns a VirtualPresenceInformer.
+func (v *version) VirtualPresences() VirtualPresenceInformer {
+	return &virtualPresenceInformer{factory: v.factory, namespace: v.namespace, tenant: v.tenant, tweakListOptions: v.tweakListOptions}
 }
