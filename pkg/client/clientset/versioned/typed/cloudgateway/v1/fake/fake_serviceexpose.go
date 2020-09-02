@@ -107,6 +107,18 @@ func (c *FakeServiceExposes) Update(serviceExpose *cloudgatewayv1.ServiceExpose)
 	return obj.(*cloudgatewayv1.ServiceExpose), err
 }
 
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeServiceExposes) UpdateStatus(serviceExpose *cloudgatewayv1.ServiceExpose) (*cloudgatewayv1.ServiceExpose, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceActionWithMultiTenancy(serviceexposesResource, "status", c.ns, serviceExpose, c.te), &cloudgatewayv1.ServiceExpose{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*cloudgatewayv1.ServiceExpose), err
+}
+
 // Delete takes name of the serviceExpose and deletes it. Returns an error if one occurs.
 func (c *FakeServiceExposes) Delete(name string, options *v1.DeleteOptions) error {
 	_, err := c.Fake.

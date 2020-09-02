@@ -46,6 +46,7 @@ type ServiceExposesGetter interface {
 type ServiceExposeInterface interface {
 	Create(*v1.ServiceExpose) (*v1.ServiceExpose, error)
 	Update(*v1.ServiceExpose) (*v1.ServiceExpose, error)
+	UpdateStatus(*v1.ServiceExpose) (*v1.ServiceExpose, error)
 	Delete(name string, options *metav1.DeleteOptions) error
 	DeleteCollection(options *metav1.DeleteOptions, listOptions metav1.ListOptions) error
 	Get(name string, options metav1.GetOptions) (*v1.ServiceExpose, error)
@@ -283,6 +284,30 @@ func (c *serviceExposes) Update(serviceExpose *v1.ServiceExpose) (result *v1.Ser
 		Namespace(c.ns).
 		Resource("serviceexposes").
 		Name(serviceExpose.Name).
+		Body(serviceExpose).
+		Do().
+		Into(result)
+
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+
+func (c *serviceExposes) UpdateStatus(serviceExpose *v1.ServiceExpose) (result *v1.ServiceExpose, err error) {
+	result = &v1.ServiceExpose{}
+
+	objectTenant := serviceExpose.ObjectMeta.Tenant
+	if objectTenant == "" {
+		objectTenant = c.te
+	}
+
+	err = c.client.Put().
+		Tenant(objectTenant).
+		Namespace(c.ns).
+		Resource("serviceexposes").
+		Name(serviceExpose.Name).
+		SubResource("status").
 		Body(serviceExpose).
 		Do().
 		Into(result)
