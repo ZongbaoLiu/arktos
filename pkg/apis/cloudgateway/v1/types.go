@@ -89,7 +89,7 @@ type CloudGatewayConfig struct {
 
 // KubeAPIConfig indicates the configuration for interacting with arktos server
 type KubeAPIConfig struct {
-	Master string `json:"master"`
+	Master     string `json:"master"`
 	KubeConfig string `json:"kubeConfig"`
 }
 
@@ -200,8 +200,8 @@ type CloudHubHTTPS struct {
 
 // VirtualPresence describe the Virtual Presence of the service
 type VirtualPresence struct {
-	metav1.TypeMeta		`json:",inline"`
-	metav1.ObjectMeta	`json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// Ip address of the virtual presence
 	VirtualIp string
@@ -214,10 +214,10 @@ type VirtualPresence struct {
 
 // list type
 type VirtualPresenceList struct {
-	metav1.TypeMeta		`json:",inline"`
-	metav1.ListMeta		`json:"metadata"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata"`
 
-	Items []VirtualPresence	`json:"items"`
+	Items []VirtualPresence `json:"items"`
 }
 
 // +genclient
@@ -226,8 +226,8 @@ type VirtualPresenceList struct {
 
 // EService describe the Service exposed in the site
 type EService struct {
-	metav1.TypeMeta		`json:",inline"`
-	metav1.ObjectMeta	`json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// Protocol of the service
 	Protocol string
@@ -246,10 +246,10 @@ type EService struct {
 
 // list type
 type EServiceList struct {
-	metav1.TypeMeta		`json:",inline"`
-	metav1.ListMeta		`json:"metadata"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata"`
 
-	Items []EService	`json:"items"`
+	Items []EService `json:"items"`
 }
 
 // +genclient
@@ -258,8 +258,8 @@ type EServiceList struct {
 
 // EServer describe the server in the site
 type EServer struct {
-	metav1.TypeMeta		`json:",inline"`
-	metav1.ObjectMeta	`json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// EServerName of the server
 	EServerName string
@@ -275,10 +275,10 @@ type EServer struct {
 
 // list type
 type EServerList struct {
-	metav1.TypeMeta		`json:",inline"`
-	metav1.ListMeta		`json:"metadata"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata"`
 
-	Items []EServer	`json:"items"`
+	Items []EServer `json:"items"`
 }
 
 // +genclient
@@ -287,8 +287,8 @@ type EServerList struct {
 
 // EPolicy describe the access policy of the service
 type EPolicy struct {
-	metav1.TypeMeta		`json:",inline"`
-	metav1.ObjectMeta	`json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// Allowed server names of this policy
 	AllowedServers []string
@@ -298,10 +298,10 @@ type EPolicy struct {
 
 // list type
 type EPolicyList struct {
-	metav1.TypeMeta		`json:",inline"`
-	metav1.ListMeta		`json:"metadata"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata"`
 
-	Items []EPolicy	`json:"items"`
+	Items []EPolicy `json:"items"`
 }
 
 type ServiceExposePhase string
@@ -323,8 +323,8 @@ type ServiceExposeStatus struct {
 
 // ServiceExpose describe how to expose the service to other site
 type ServiceExpose struct {
-	metav1.TypeMeta		`json:",inline"`
-	metav1.ObjectMeta	`json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// Associated service name will be exposed
 	EServiceName string
@@ -347,8 +347,8 @@ type ServiceExpose struct {
 
 // list type
 type ServiceExposeList struct {
-	metav1.TypeMeta		`json:",inline"`
-	metav1.ListMeta		`json:"metadata"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata"`
 
-	Items []ServiceExpose	`json:"items"`
+	Items []ServiceExpose `json:"items"`
 }

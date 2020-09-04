@@ -34,7 +34,7 @@ communication and access capabilities for services and components of the cloud a
 			registerModules(config)
 
 			// start all the modules started in cloudGateway
-			go core.Run()
+			core.Run()
 
 			return nil
 		},

@@ -79,6 +79,7 @@ func newController(enable bool, kc *v1.KubeAPIConfig) *Controller {
 	serviceExposeInformer := informerFactory.Cloudgateway().V1().ServiceExposes()
 	policyInformer := informerFactory.Cloudgateway().V1().EPolicies()
 	c := &Controller{
+		enable:                      true,
 		clientset:                   gatewayClient,
 		informerFactory:			 informerFactory,
 		serviceExposeInformerLister: serviceExposeInformer.Lister(),
