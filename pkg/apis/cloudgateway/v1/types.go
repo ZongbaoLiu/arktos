@@ -80,15 +80,32 @@ type EGatewayList struct {
 // CloudGatewayConfig indicates the config of cloudGateway which get from cloudGateway config file
 type CloudGatewayConfig struct {
 	metav1.TypeMeta
+	// +Required
+	KubeAPIConfig *KubeAPIConfig `json:"kubeAPIConfig,omitempty"`
 	// Modules indicates cloudGateway modules config
 	// +Required
 	Modules *Modules `json:"modules,omitempty"`
+}
+
+// KubeAPIConfig indicates the configuration for interacting with arktos server
+type KubeAPIConfig struct {
+	Master string `json:"master"`
+	KubeConfig string `json:"kubeConfig"`
 }
 
 // Modules indicates the modules of CloudGateway will be use
 type Modules struct {
 	// CloudHub indicates CloudHub module config
 	CloudHub *CloudHub `json:"cloudHub,omitempty"`
+	// Controller indicates Controller module config
+	Controller *Controller `json:"controller,omitempty"`
+}
+
+// Controller indicates the config of Controller module.
+type Controller struct {
+	// Enable indicates whether Controller is enabled, if set ot false
+	// skip checking other Controller configs.
+	Enable bool `json:"enable,omitempty"`
 }
 
 // CloudHub indicates the config of CloudHub module.

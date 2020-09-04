@@ -10,4 +10,7 @@ const (
 
 	DefaultCAURL   = "/ca.crt"
 	DefaultCertURL = "/edge.crt"
+
+	// KubeAPIConfig
+	DefaultKubeConfig	= "/root/.kube/config"
 )
