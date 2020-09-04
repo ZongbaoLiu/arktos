@@ -2,22 +2,22 @@ package handler
 
 import "k8s.io/klog"
 
-// EPolicyHandler is a epolicy object handler
-type EPolicyHandler struct{}
+// ServiceExposeHandler is a service expose object handler
+type ServiceExposeHandler struct{}
 
-func (t *EPolicyHandler) Init() error{
-	klog.V(4).Info("EPolicyHandler.Init")
+func (t *ServiceExposeHandler) Init() error{
+	klog.V(4).Info("ServiceExposeHandler.Init")
 	return nil
 }
 
-func (t *EPolicyHandler) ObjectCreated(obj interface{}) {
-	klog.V(4).Info("EPolicyHandler.ObjectCreated")
+func (t *ServiceExposeHandler) ObjectCreated(obj interface{}) {
+	klog.V(4).Info("ServiceExposeHandler.ObjectCreated")
 }
 
-func (t *EPolicyHandler) ObjectUpdated(obj interface{}) {
-	klog.V(4).Info("EPolicyHandler.ObjectUpdated")
+func (t *ServiceExposeHandler) ObjectUpdated(obj interface{}) {
+	klog.V(4).Info("ServiceExposeHandler.ObjectUpdated")
 }
 
-func (t *EPolicyHandler) ObjectDeleted(obj interface{}) {
-	klog.V(4).Info("EPolicyHandler.ObjectDeleted")
+func (t *ServiceExposeHandler) ObjectDeleted(obj interface{}) {
+	klog.V(4).Info("ServiceExposeHandler.ObjectDeleted")
 }
