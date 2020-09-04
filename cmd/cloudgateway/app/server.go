@@ -4,11 +4,13 @@ import (
 	"github.com/kubeedge/beehive/pkg/core"
 	"github.com/spf13/cobra"
 	utilerrors "k8s.io/apimachinery/pkg/util/errors"
+	"k8s.io/component-base/cli/globalflag"
 	"k8s.io/kubernetes/cmd/cloudgateway/app/options"
 	v1 "k8s.io/kubernetes/pkg/apis/cloudgateway/v1"
 	"k8s.io/kubernetes/pkg/cloudgateway/cloudhub"
 	"k8s.io/kubernetes/pkg/cloudgateway/controller"
 	utilflag "k8s.io/kubernetes/pkg/util/flag"
+	"k8s.io/kubernetes/pkg/version/verflag"
 )
 
 func NewCloudGatewayCommand() *cobra.Command {
@@ -42,6 +44,8 @@ communication and access capabilities for services and components of the cloud a
 
 	fs := cmd.Flags()
 	namedFlagSets := o.Flags()
+	verflag.AddFlags(namedFlagSets.FlagSet("global"))
+	globalflag.AddGlobalFlags(namedFlagSets.FlagSet("global"), cmd.Name())
 	for _, f := range namedFlagSets.FlagSets {
 		fs.AddFlagSet(f)
 	}
