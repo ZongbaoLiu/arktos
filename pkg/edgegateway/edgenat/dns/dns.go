@@ -1,0 +1,5 @@
+package dns
+
+func Start() {
+
+}
